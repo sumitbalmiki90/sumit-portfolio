@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: theme('colors.background');
+    color: theme('colors.text.primary');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base styles for syntax highlighting, custom selections, etc., if needed */
+::selection {
+    background-color: theme('colors.accent.DEFAULT');
+    color: white;
+}
