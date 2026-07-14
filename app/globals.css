@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+}
+
+body {
+  background-color: theme('colors.background');
+  color: theme('colors.text.primary');
+}
