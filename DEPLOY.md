@@ -1,47 +1,34 @@
-# Deploying to GitHub Pages (manual upload via github.com)
+# How this site is deployed (updated 2026-07-14)
 
-The deploy-ready site is the **contents of the `out/` folder** (58 files, ~1.8 MB).
-It is built with `basePath: /sumit-portfolio` so it renders correctly at
-`https://sumitbalmiki90.github.io/sumit-portfolio/`.
+Live site: **https://sumitbalmiki90.github.io/sumit-portfolio/**
 
-## Steps
+The GitHub repo `sumitbalmiki90/sumit-portfolio` now has two branches:
 
-1. Go to your repo on github.com: **`sumitbalmiki90/sumit-portfolio`** (the one that
-   serves the live site). Make sure you're on the branch GitHub Pages publishes from
-   (Settings → Pages tells you which branch/folder — likely `main`, root).
+- **`main`** — the source code (this folder: `app/`, `components/`, configs).
+- **`gh-pages`** — the built website (the contents of `out/`). GitHub Pages
+  serves the live site from this branch (Settings → Pages → branch `gh-pages`).
 
-2. Click **Add file → Upload files**.
+⚠️ Do NOT follow the old drag-and-drop instructions (uploading `out/` contents
+to `main`) — that would dump built files on top of the source code.
 
-3. Open the `out/` folder on your PC, select **everything inside it** (Ctrl+A) —
-   including the `_next` folder and the `case-studies` folder — and **drag it onto the
-   upload area**. Do NOT drag the `out` folder itself; drag its *contents* so they land
-   at the repo root.
+## To update the live site
 
-4. ⚠️ **The `.nojekyll` file often does NOT survive drag-and-drop.** After the upload,
-   confirm it's in the repo root. If it's missing, create it manually:
-   **Add file → Create new file**, name it exactly `.nojekyll` (leave it empty),
-   then Commit. Without this file, GitHub ignores the `_next/` folder and the site
-   loads unstyled.
+Easiest: open Claude Code in this folder and say
+**"rebuild the portfolio and deploy it to GitHub Pages"**.
 
-5. Write a commit message (e.g. "Reposition: dual-pillar + 4 real case studies") and
-   **Commit changes**.
+Manual steps (for a developer):
 
-6. Wait ~1–2 minutes for Pages to rebuild, then hard-refresh
-   `https://sumitbalmiki90.github.io/sumit-portfolio/` (Ctrl+Shift+R).
+1. Edit the source, then run `npm run build` — output goes to `out/`.
+2. Ensure `out/.nojekyll` exists (create an empty file with that name if not —
+   without it GitHub ignores the `_next/` folder and the site loads unstyled).
+3. Commit the *contents* of `out/` to the `gh-pages` branch and push.
+4. Commit any source changes to `main` and push.
+5. Wait ~1–2 minutes, then hard-refresh the live site (Ctrl+Shift+R).
 
-## Optional cleanup
+## Notes
 
-Your old hand-coded site left these orphan files in the repo (now unused — the new
-`index.html`/`about.html`/etc. overwrite the old pages by name):
-- `css/` folder (old `styles.css`)
-- `js/` folder (old `main.js`)
-
-They're harmless but you can delete them on github.com for tidiness.
-
-## What changed in the source (for future rebuilds)
-
-- `next.config.mjs` now sets `basePath: '/sumit-portfolio'` — required for the project
-  page. To rebuild: `npm run build`, then re-add `out/.nojekyll` (the build doesn't
-  create it), then re-upload `out/` contents.
-- Local preview now runs at **http://localhost:3000/sumit-portfolio** (note the path)
-  when you run `npm run dev`.
+- `next.config.mjs` sets `basePath: '/sumit-portfolio'` — required because the
+  site lives at a sub-path. Local preview runs at
+  **http://localhost:3000/sumit-portfolio** (`npm run dev`).
+- If a Pages rebuild doesn't start after a push, trigger one from the repo's
+  Settings → Pages, or via the API (`POST /repos/{owner}/{repo}/pages/builds`).
